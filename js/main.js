@@ -1,2 +1,1 @@
-import {createArrayOffer} from './data.js';
-createArrayOffer();
+import './popap.js';
