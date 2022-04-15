@@ -48,6 +48,52 @@ const getGuestsErrorMessage = () =>
 
 pristine.addValidator(numberGuests, checkCapacity, getGuestsErrorMessage);
 
+const typeOfHousing = adForm.querySelector('#type');
+const price = adForm.querySelector('#price');
+
+const minPrice = {
+  bungalow: '0',
+  flat: '1000',
+  hotel: '3000',
+  house: '5000',
+  palace: '10000',
+};
+
+const validatePrice = () =>
+  price.value >= parseInt(minPrice[typeOfHousing.value], 10);
+
+const getPriceErrorMessage = () =>
+  `Для выбранного типа жилья минимальная цена за ночь ${
+    minPrice[typeOfHousing.value]
+  } руб.`;
+
+pristine.addValidator(price, validatePrice, getPriceErrorMessage);
+
+const onTypeChange = () => {
+  price.placeholder = minPrice[typeOfHousing.value];
+  pristine.validate(price);
+};
+
+typeOfHousing.addEventListener('change', () => {
+  onTypeChange();
+});
+
+const timeIn = adForm.querySelector('#timein');
+const timeOut = adForm.querySelector('#timeout');
+
+const onTimeChange = (element, elementChecked) => {
+  element.selectedIndex = elementChecked.selectedIndex;
+  pristine.validate(elementChecked);
+};
+
+timeIn.addEventListener('change', () => {
+  onTimeChange(timeOut, timeIn);
+});
+
+timeOut.addEventListener('change', () => {
+  onTimeChange(timeIn, timeOut);
+});
+
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
