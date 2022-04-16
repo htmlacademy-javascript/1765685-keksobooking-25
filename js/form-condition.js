@@ -20,7 +20,7 @@ const removeDisabledElementsForm = (form, elem) => {
 
 addDisabledElementsForm(adFormMapFilteres, adMapFiltersElements);
 addDisabledElementsForm(adForm, adFormELements);
-removeDisabledElementsForm(adFormMapFilteres, adMapFiltersElements);
-removeDisabledElementsForm(adForm, adFormELements);
+// removeDisabledElementsForm(adFormMapFilteres, adMapFiltersElements);
+// removeDisabledElementsForm(adForm, adFormELements);
 
 export {addDisabledElementsForm, removeDisabledElementsForm};

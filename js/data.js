@@ -10,7 +10,7 @@ const LAT_MIN=35.65000;
 const LAT_MAX=35.70000;
 const LNG_MIN= 139.70000;
 const LNG_MAX= 139.80000;
-const ADVERTS_AMOUNT=1;
+const ADVERTS_AMOUNT=10;
 
 const TITLES=['Заголовок-1', 'Заголовок-2', 'Заголовок-3', 'Заголовок-4', 'Заголовок-5',];
 const TYPES = ['palace', 'flat', 'house', 'bungalow', 'hotel'];
