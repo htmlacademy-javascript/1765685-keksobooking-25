@@ -125,3 +125,4 @@ const drawAd = () => {
   similarListElement.append(similarListFragment);
 };
 drawAd();
+export {createAd, similarAds};
