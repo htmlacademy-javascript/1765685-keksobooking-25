@@ -1,3 +1,8 @@
+import {isEscapeKey} from './util.js';
+import { priceSlider } from './slider.js';
+import {sendData} from './api.js';
+import {getStartСoordinates, getStartMainPinMarker} from './map.js';
+
 const adForm = document.querySelector('.ad-form');
 
 const pristine = new Pristine(adForm, {
@@ -94,7 +99,75 @@ timeOut.addEventListener('change', () => {
   onTimeChange(timeIn, timeOut);
 });
 
-adForm.addEventListener('submit', (evt) => {
+// adForm.addEventListener('submit', (evt) => {
+//   evt.preventDefault();
+//   pristine.validate();
+// });
+
+const showMessage = (message) => {
+  const containerMessage = document.querySelector(`#${message}`).content.querySelector(`.${message}`);
+  document.body.append(containerMessage);
+
+  document.addEventListener('click', () => {
+    containerMessage.classList.add('visually-hidden');
+  });
+
+  document.addEventListener('keydown', (evt) => {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      containerMessage.classList.add('visually-hidden');
+    }
+  });
+};
+
+const resetButton = document.querySelector('.ad-form__reset');
+
+const returnOriginalState = () => {
+  adForm.reset();
+  priceSlider.noUiSlider.updateOptions({
+    start: 0,
+  });
+  getStartСoordinates();
+  getStartMainPinMarker();
+};
+
+resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
-  pristine.validate();
+  returnOriginalState();
 });
+
+const submitButton = document.querySelector('.ad-form__submit');
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+};
+
+
+const setUserFormSubmit = () => {
+  adForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          unblockSubmitButton();
+          showMessage('success');
+          returnOriginalState();
+        },
+        () => {
+          unblockSubmitButton();
+          showMessage('error');
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
+
+export {setUserFormSubmit};

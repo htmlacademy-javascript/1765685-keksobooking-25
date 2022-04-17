@@ -1,4 +1,5 @@
-import { createAd, similarAds } from './popap.js';
+// import { createAd, similarAds } from './popap.js';
+import { createAd } from './popap.js';
 import { removeDisabledElementsForm } from './form-condition.js';
 const adFormMapFilteres = document.querySelector('.map__filters');
 const adForm = document.querySelector('.ad-form');
@@ -10,6 +11,11 @@ const adFormELements = adForm.querySelectorAll(
 );
 
 const address = document.querySelector('#address');
+const latitude = 35.681729;
+const longtude = 139.753927;
+const getStartСoordinates = () => {
+  address.value = `${latitude}, ${longtude}`;
+};
 
 const map = L.map('map-canvas')
   .on('load', () => {
@@ -35,6 +41,7 @@ const mainPinIcon = L.icon({
   iconAnchor: [26, 52],
 });
 
+
 const mainPinMarker = L.marker(
   {
     lat: 35.68172,
@@ -47,6 +54,13 @@ const mainPinMarker = L.marker(
 );
 
 mainPinMarker.addTo(map);
+
+const getStartMainPinMarker = () => {
+  mainPinMarker.setLatLng({
+    lat: latitude,
+    lng: longtude,
+  });
+};
 
 address.value = `${mainPinMarker.getLatLng()}`;
 
@@ -79,9 +93,18 @@ const createMarker = (ad) => {
 
   marker.addTo(map).bindPopup(createAd(ad));
 
-  return marker;
+  // return marker;
 };
 
-similarAds.forEach((ad) => {
-  createMarker(ad);
-});
+const createMarkers = (similarAds) => {
+  similarAds.forEach((ad) => {
+    createMarker(ad);
+  });
+};
+
+export{createMarkers, getStartСoordinates, getStartMainPinMarker};
+
+
+// similarAds.forEach((ad) => {
+//   createMarker(ad);
+// });
