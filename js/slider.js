@@ -40,3 +40,5 @@ type.addEventListener('change', () => {
     start: minPriceOfType[type.value],
   });
 });
+
+export {priceSlider};
