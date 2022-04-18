@@ -9,15 +9,11 @@ const getData = (onSuccess, onFail) => {
     .catch(() => onFail(SERVER_ERROR_MESSAGE));
 };
 
-
 const sendData = (onSuccess, onFail, body) => {
-  fetch(
-    'https://25.javascript.pages.academy/keksobooking',
-    {
-      method: 'POST',
-      body,
-    },
-  )
+  fetch('https://25.javascript.pages.academy/keksobooking', {
+    method: 'POST',
+    body,
+  })
     .then((response) => {
       if (response.ok) {
         onSuccess();
@@ -30,4 +26,4 @@ const sendData = (onSuccess, onFail, body) => {
     });
 };
 
-export {getData, sendData};
+export { getData, sendData };

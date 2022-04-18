@@ -1,4 +1,3 @@
-
 const isInvalidPositive = (number) => number < 0;
 const isInvalidBoundary = (from, upTo) => upTo <= from;
 const isInvalidInterval = (from, upTo) => Math.ceil(from) === Math.floor(upTo);
@@ -68,10 +67,12 @@ const getArrayRandomElements = (ArrayElements, numberOfRandomElements) => {
   if (numberOfRandomElements === ArrayElements.length) {
     return ArrayElements;
   }
-  if (numberOfRandomElements > ArrayElements.length) {return `Ошибка. Заданное количество случайных элементов (${numberOfRandomElements}) превышает количество элементов массива (${ArrayElements.length})`;}
+  if (numberOfRandomElements > ArrayElements.length) {
+    return `Ошибка. Заданное количество случайных элементов (${numberOfRandomElements}) превышает количество элементов массива (${ArrayElements.length})`;
+  }
   const copyArrayElements = ArrayElements.slice();
   if (!numberOfRandomElements) {
-    numberOfRandomElements = getRandomInteger(1, ArrayElements.length-1);
+    numberOfRandomElements = getRandomInteger(1, ArrayElements.length - 1);
   }
   for (let i = 0; i < numberOfRandomElements; i++) {
     const tempElement = copyArrayElements[i];
@@ -106,4 +107,23 @@ const showAlert = (message) => {
   }, 6000);
 };
 
-export {getRandomInteger, getRandomFloat, getArrayRandomElements, isEscapeKey, showAlert};
+const debounce = (cb, timeoutDelay) => {
+  let timerId;
+
+  return (...rest) => {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => cb.apply(this, rest), timeoutDelay);
+  };
+};
+
+const RENDER_DELAY = 500;
+
+export {
+  getRandomInteger,
+  getRandomFloat,
+  getArrayRandomElements,
+  isEscapeKey,
+  showAlert,
+  debounce,
+  RENDER_DELAY,
+};

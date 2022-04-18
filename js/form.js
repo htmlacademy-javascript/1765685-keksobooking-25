@@ -1,9 +1,33 @@
-import {isEscapeKey} from './util.js';
+import { isEscapeKey } from './util.js';
 import { priceSlider } from './slider.js';
-import {sendData} from './api.js';
-import {getStartСoordinates, getStartMainPinMarker} from './map.js';
+import { sendData } from './api.js';
+import { getStartСoordinates, getStartMainPinMarker } from './map.js';
 
 const adForm = document.querySelector('.ad-form');
+const numberRooms = adForm.querySelector('#room_number');
+const numberGuests = adForm.querySelector('#capacity');
+const typeOfHousing = adForm.querySelector('#type');
+const price = adForm.querySelector('#price');
+const title = adForm.querySelector('#title');
+
+const timeIn = adForm.querySelector('#timein');
+const timeOut = adForm.querySelector('#timeout');
+const resetButton = document.querySelector('.ad-form__reset');
+const submitButton = document.querySelector('.ad-form__submit');
+
+const maxCapacity = {
+  1: ['1'],
+  2: ['1', '2'],
+  3: ['1', '2', '3'],
+  100: ['0'],
+};
+const minPrice = {
+  bungalow: '0',
+  flat: '1000',
+  hotel: '3000',
+  house: '5000',
+  palace: '10000',
+};
 
 const pristine = new Pristine(adForm, {
   classTo: 'ad-form__element',
@@ -14,8 +38,6 @@ const pristine = new Pristine(adForm, {
   errorTextClass: 'ad-form__element--error',
 });
 
-const title = adForm.querySelector('#title');
-
 const checkTitle = (value) => value.length >= 30 && value.length <= 100;
 
 const getTitleErrorMessage = (value) => {
@@ -25,16 +47,6 @@ const getTitleErrorMessage = (value) => {
 };
 
 pristine.addValidator(title, checkTitle, getTitleErrorMessage);
-
-const numberRooms = adForm.querySelector('#room_number');
-const numberGuests = adForm.querySelector('#capacity');
-
-const maxCapacity = {
-  1: ['1'],
-  2: ['1', '2'],
-  3: ['1', '2', '3'],
-  100: ['0'],
-};
 
 const checkCapacity = () =>
   maxCapacity[numberRooms.value].includes(numberGuests.value);
@@ -52,17 +64,6 @@ const getGuestsErrorMessage = () =>
   } невозможен.`;
 
 pristine.addValidator(numberGuests, checkCapacity, getGuestsErrorMessage);
-
-const typeOfHousing = adForm.querySelector('#type');
-const price = adForm.querySelector('#price');
-
-const minPrice = {
-  bungalow: '0',
-  flat: '1000',
-  hotel: '3000',
-  house: '5000',
-  palace: '10000',
-};
 
 const validatePrice = () =>
   price.value >= parseInt(minPrice[typeOfHousing.value], 10);
@@ -83,9 +84,6 @@ typeOfHousing.addEventListener('change', () => {
   onTypeChange();
 });
 
-const timeIn = adForm.querySelector('#timein');
-const timeOut = adForm.querySelector('#timeout');
-
 const onTimeChange = (element, elementChecked) => {
   element.selectedIndex = elementChecked.selectedIndex;
   pristine.validate(elementChecked);
@@ -99,13 +97,10 @@ timeOut.addEventListener('change', () => {
   onTimeChange(timeIn, timeOut);
 });
 
-// adForm.addEventListener('submit', (evt) => {
-//   evt.preventDefault();
-//   pristine.validate();
-// });
-
 const showMessage = (message) => {
-  const containerMessage = document.querySelector(`#${message}`).content.querySelector(`.${message}`);
+  const containerMessage = document
+    .querySelector(`#${message}`)
+    .content.querySelector(`.${message}`);
   document.body.append(containerMessage);
 
   document.addEventListener('click', () => {
@@ -119,8 +114,6 @@ const showMessage = (message) => {
     }
   });
 };
-
-const resetButton = document.querySelector('.ad-form__reset');
 
 const returnOriginalState = () => {
   adForm.reset();
@@ -136,8 +129,6 @@ resetButton.addEventListener('click', (evt) => {
   returnOriginalState();
 });
 
-const submitButton = document.querySelector('.ad-form__submit');
-
 const blockSubmitButton = () => {
   submitButton.disabled = true;
 };
@@ -145,7 +136,6 @@ const blockSubmitButton = () => {
 const unblockSubmitButton = () => {
   submitButton.disabled = false;
 };
-
 
 const setUserFormSubmit = () => {
   adForm.addEventListener('submit', (evt) => {
@@ -164,10 +154,10 @@ const setUserFormSubmit = () => {
           unblockSubmitButton();
           showMessage('error');
         },
-        new FormData(evt.target),
+        new FormData(evt.target)
       );
     }
   });
 };
 
-export {setUserFormSubmit};
+export { setUserFormSubmit, adForm };
