@@ -1,17 +1,17 @@
 import './popap.js';
 import './form-condition.js';
-import {setUserFormSubmit} from './form.js';
-import {createMarkers} from './map.js';
 import './slider.js';
-import {getData} from './api.js';
-import { showAlert } from './util.js';
-
-const CREATE_MARKERS_COUNT = 5;
+import './photo.js';
+import { setUserFormSubmit } from './form.js';
+import { createMarkers } from './map.js';
+import { getData } from './api.js';
+import { debounce, showAlert } from './util.js';
+import { filterChange } from './filter.js';
+import { RENDER_DELAY } from './util.js';
 
 getData((ads) => {
-  createMarkers(ads.slice(0, CREATE_MARKERS_COUNT));
-},
-showAlert
-);
+  createMarkers(ads);
+  filterChange(debounce(() => createMarkers(ads), RENDER_DELAY));
+}, showAlert);
 
 setUserFormSubmit();

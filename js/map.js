@@ -1,6 +1,7 @@
-// import { createAd, similarAds } from './popap.js';
 import { createAd } from './popap.js';
 import { removeDisabledElementsForm } from './form-condition.js';
+import { totalMatch } from './filter.js';
+
 const adFormMapFilteres = document.querySelector('.map__filters');
 const adForm = document.querySelector('.ad-form');
 const adMapFiltersElements = adFormMapFilteres.querySelectorAll(
@@ -9,10 +10,11 @@ const adMapFiltersElements = adFormMapFilteres.querySelectorAll(
 const adFormELements = adForm.querySelectorAll(
   '.ad-form__element, .ad-form-header__input'
 );
-
 const address = document.querySelector('#address');
+const SIMILAR_CARD_NUMBER = 10;
 const latitude = 35.681729;
 const longtude = 139.753927;
+
 const getStartСoordinates = () => {
   address.value = `${latitude}, ${longtude}`;
 };
@@ -40,7 +42,6 @@ const mainPinIcon = L.icon({
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
-
 
 const mainPinMarker = L.marker(
   {
@@ -74,6 +75,8 @@ const icon = L.icon({
   iconAnchor: [20, 40],
 });
 
+const markerGroup = L.layerGroup().addTo(map);
+
 const createMarker = (ad) => {
   const {
     location: { lat },
@@ -91,20 +94,15 @@ const createMarker = (ad) => {
     }
   );
 
-  marker.addTo(map).bindPopup(createAd(ad));
-
-  // return marker;
+  marker.addTo(markerGroup).bindPopup(createAd(ad));
 };
 
 const createMarkers = (similarAds) => {
-  similarAds.forEach((ad) => {
+  markerGroup.clearLayers();
+  const filteredData = totalMatch(similarAds);
+  filteredData.slice(0, SIMILAR_CARD_NUMBER).forEach((ad) => {
     createMarker(ad);
   });
 };
 
-export{createMarkers, getStartСoordinates, getStartMainPinMarker};
-
-
-// similarAds.forEach((ad) => {
-//   createMarker(ad);
-// });
+export { createMarkers, getStartСoordinates, getStartMainPinMarker };

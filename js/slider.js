@@ -41,4 +41,4 @@ type.addEventListener('change', () => {
   });
 });
 
-export {priceSlider};
+export { priceSlider };
